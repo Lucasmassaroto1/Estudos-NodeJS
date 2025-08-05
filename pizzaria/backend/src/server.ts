@@ -4,11 +4,19 @@ import 'express-async-errors';
 import cors from 'cors';
 import { router } from './routes.js';
 
+import path,{ dirname } from 'path';
+
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 app.use(router);
+
+app.use('/files', express.static(path.resolve(__dirname, '..', 'tmp')))
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction)=>{
     if(err instanceof Error){
